@@ -53,7 +53,7 @@ if is_bonus :
 		else :
 			makefile.write("\\\n")
 
-makefile.write("MANDATORY_OBJS = $(patsubst %.c,%.o,$(SRCS))\n")
+makefile.write("MANDATORY_OBJS = $(patsubst %.c,%.o,$(MANDATORY_SRCS))\n")
 if is_bonus :
 	makefile.write("BONUS_OBJS = $(patsubst %.c,%.o,$(BONUS_SRCS))\n")
 makefile.write("\n")
@@ -64,7 +64,7 @@ if is_bonus :
 	makefile.write("\tOBJS = $(BONUS_OBJS)\t\n")
 	makefile.write("else\n")
 	makefile.write("\tSRCS = $(MANDATORY_SRCS)\n")
-	makefile.write("\tOBJ = $(MANDATORY_OBJS)\n")
+	makefile.write("\tOBJS = $(MANDATORY_OBJS)\n")
 	makefile.write("endif\n\n")
 else :
 	makefile.write("SRCS = $(MANDATORY_SRCS)\n")
@@ -79,17 +79,17 @@ if is_bonus :
 	makefile.write("\tmake WITH_BONUS=1 all\n")
 makefile.write("\n")
 makefile.write("$(NAME) : $(OBJS)\n")
-makefile.write("\t$(CC) $(CFLAGS) $(OBJS) -o $(NAME)\n")
+makefile.write("\t$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) $(INCLUDE) -o $(NAME)\n")
 makefile.write("\n")
 if is_bonus :
 	makefile.write("%_bonus.o : %_bonus.c\n")
 	makefile.write("\t$(CC) $(CFLAGS) -c $(INCLUDE) $< -o $@\n")
 	makefile.write("\n")
 makefile.write("%.o : %.c\n")
-makefile.write("\t$(CC) $(CFLAGS) -c $< -o $@\n")
+makefile.write("\t$(CC) $(CFLAGS) -c $(INCLUDE) $< -o $@\n")
 makefile.write("\n")
 makefile.write("clean:\n")
-makefile.write(f"\trm -rf {'$(BONUS_OBJS)' if is_bonus else ''} $(OBJS)\n")
+makefile.write(f"\trm -rf {'$(BONUS_OBJS)' if is_bonus else ''} $(MANDATORY_OBJS)\n")
 makefile.write("\n")
 makefile.write("fclean: clean\n")
 makefile.write("\trm -rf $(NAME)\n")
@@ -99,7 +99,7 @@ makefile.write("\t@make fclean\n")
 makefile.write("\t@make all\n")
 if is_bonus :
 	makefile.write("\n")
-	makefile.write("re_bonus\n")
+	makefile.write("re_bonus :\n")
 	makefile.write("\t@make fclean\n")
 	makefile.write("\t@make bonus\n")
 makefile.write("\n")
