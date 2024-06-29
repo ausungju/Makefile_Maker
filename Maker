@@ -4,44 +4,92 @@ import os
 
 title = input("생성될 프로그램 입력 : ")
 dic = input("작업 디랙토리 위치 :")
-is_bonus = input("bonus 유무(미구현) : ")
+
+is_bonus = input("bonus 유무 [y/N] : ")
+if is_bonus == "Y" or is_bonus == "y" :
+	is_bonus = 1
+else :
+	is_bonus = 0
+
+tab = '\t'
 src_list = []
+mandatory_list = []
+bonus_list = []
 files = os.listdir(dic)
 
 for file in files :
 	if ".c" in file :
 		src_list.append(file)
-
-makefile = open("./Makefile", "w")
-makefile.write("CC = cc\n")
-makefile.write("CFLAGS = -Wall -Wextra -Werror\n")
-makefile.write(f"NAME = {title}\n\n")
-makefile.write("SRCS = \\\n")
-
-tab = '\t'
+	if ".c" in file and "bonus" not in file :
+		mandatory_list.append(file)
+	elif ".c" in file and "bonus" in file :
+		bonus_list.append(file)
 max_length = max(len(file) for file in src_list)
 max_length = max_length + 4 - max_length % 4
 
-for i, src in enumerate(src_list) :
+
+makefile = open(f"{dic}/Makefile", "w")
+makefile.write("CC = cc\n")
+makefile.write("CFLAGS = -Wall -Wextra -Werror\n")
+makefile.write(f"NAME = {title}\n\n")
+makefile.write("MANDATORY_SRCS = \\\n")
+
+for i, src in enumerate(mandatory_list) :
 	needtap = int((max_length - len(src) + len(src) % 4) / 4)
 	makefile.write(f"\t{src}{tab * needtap}")
-	if (i == len(src_list) - 1) :
+	if (i == len(mandatory_list) - 1) :
 		makefile.write("\n\n")
 	else :
 		makefile.write("\\\n")
 
-makefile.write("OBJS = $(patsubst %.c,%.o,$(SRCS))\n\n")
+if is_bonus :
+	makefile.write("BONUS_SRCS = \\\n")
+
+	for i, src in enumerate(bonus_list) :
+		needtap = int((max_length - len(src) + len(src) % 4) / 4)
+		makefile.write(f"\t{src}{tab * needtap}")
+		if (i == len(bonus_list) - 1) :
+			makefile.write("\n\n")
+		else :
+			makefile.write("\\\n")
+
+makefile.write("MANDATORY_OBJS = $(patsubst %.c,%.o,$(SRCS))\n")
+if is_bonus :
+	makefile.write("BONUS_OBJS = $(patsubst %.c,%.o,$(BONUS_SRCS))\n")
+makefile.write("\n")
+
+if is_bonus :
+	makefile.write("ifdef WITH_BONUS\n")
+	makefile.write("\tSRCS = $(BONUS_SRCS)\n")
+	makefile.write("\tOBJ = $(BONUS_OBJS)\t\n")
+	makefile.write("else\n")
+	makefile.write("\tSRCS = $(MANDATORY_SRCS)\n")
+	makefile.write("\tOBJ = $(MANDATORY_OBJS)\n")
+	makefile.write("endif\n\n")
+else :
+	makefile.write("SRCS = $(MANDATORY_SRCS)\n")
+	makefile.write("OBJ = $(MANDATORY_OBJS)\n")
+makefile.write("\n")
+
 
 makefile.write("all : $(NAME)\n")
+makefile.write("\n")
+if is_bonus :
+	makefile.write("bonus:\n")
+	makefile.write("\tmake WITH_BONUS=1 all\n")
 makefile.write("\n")
 makefile.write("$(NAME) : $(OBJS)\n")
 makefile.write("\t$(CC) $(CFLAGS) $(OBJS) -o $(NAME)\n")
 makefile.write("\n")
+if is_bonus :
+	makefile.write("%_bonus.o : %_bonus.c\n")
+	makefile.write("\t$(CC) $(CFLAGS) -c $(INCLUDE) $< -o $@\n")
+	makefile.write("\n")
 makefile.write("%.o : %.c\n")
 makefile.write("\t$(CC) $(CFLAGS) -c $< -o $@\n")
 makefile.write("\n")
 makefile.write("clean:\n")
-makefile.write("\trm -rf $(OBJS)\n")
+makefile.write("\trm -rf $(BONUS_OBJS) $(OBJS)\n")
 makefile.write("\n")
 makefile.write("fclean: clean\n")
 makefile.write("\trm -rf $(NAME)\n")
@@ -49,5 +97,10 @@ makefile.write("\n")
 makefile.write("re:\n")
 makefile.write("\t@make fclean\n")
 makefile.write("\t@make all\n")
+if is_bonus :
+	makefile.write("\n")
+	makefile.write("re_bonus\n")
+	makefile.write("\t@make fclean\n")
+	makefile.write("\t@make bonus\n")
 makefile.write("\n")
-makefile.write(".PHONY: all clean fclean re\n")
+makefile.write(f".PHONY: all {'bonus re_bonus' if is_bonus else ''}clean fclean re\n")
