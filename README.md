@@ -1,7 +1,7 @@
 # Makefile_Maker
 
 ## 설명
-이 파일은 기본적인 makefile을 자동으로 만들어 줍니다.
+이 파일은 기본적인 makefile을 자동으로 만들어 줍니다.<br>
 아직 bonus 부분은 미구현
 #### 종속성
 - python3 필요
