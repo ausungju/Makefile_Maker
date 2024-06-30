@@ -3,7 +3,7 @@
 echo "Maker Change permissions"
 chmod 777 Maker
 echo "mv -i Maker ~/.local/Maker"
-mv -i Maker ~/.local/Maker
+cp -i Maker ~/.local/Maker
 
 if [ -e  ~/.zshrc ]; then
 	echo "user used zsh => zsh alias Register"
