@@ -22,8 +22,11 @@ src_list = []
 mandatory_list = []
 bonus_list = []
 files = os.listdir(dic)
+# files = os.listdir("./")
 
 for file in files :
+	# if os.path.isdir(file) and file != ".git" and file != ".vscode" and file != "build" :
+	# 	print(file)
 	if ".c" in file :
 		src_list.append(file)
 	if ".c" in file and "bonus" not in file :
@@ -32,7 +35,6 @@ for file in files :
 		bonus_list.append(file)
 max_length = max(len(file) for file in src_list)
 max_length = max_length + 4 - max_length % 4
-
 
 makefile = open(f"{dic}/Makefile", "w")
 makefile.write("CC = cc\n")
