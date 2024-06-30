@@ -11,7 +11,7 @@
 ```
 git clone https://github.com/ausungju/Makefile_Maker.git
 ```
-2. 다운로드 된 directory로 이동하세요.
+2. 다운로드 된 repo로 이동하세요.
 ```
 cd Makefile_Maker
 ```
