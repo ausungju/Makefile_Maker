@@ -2,7 +2,7 @@
 
 ## 설명
 이 파일은 기본적인 makefile을 자동으로 만들어 줍니다.<br>
-하지만 work directory안에 sub directory가 있는 경우는 100%는 안됩니다..
+하지만 work directory안에 sub directory가 있는 경우는 안됩니다..
 #### 종속성
 - python3
 
