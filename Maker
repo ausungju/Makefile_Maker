@@ -2,14 +2,20 @@
 
 import os
 
-title = input("생성될 프로그램 입력 : ")
-dic = input("작업 디랙토리 위치 :")
+title = input("create program name : ")
+dic = input("work directory :")
 
-is_bonus = input("bonus 유무 [y/N] : ")
+if dic == "" :
+	dic = "./"
+
+is_bonus = input("there bonus? [y/N] : ")
 if is_bonus == "Y" or is_bonus == "y" :
 	is_bonus = 1
 else :
 	is_bonus = 0
+link_flags = input("LFLAGS : ")
+include = input("INCLUDE : ")
+
 
 tab = '\t'
 src_list = []
@@ -31,6 +37,9 @@ max_length = max_length + 4 - max_length % 4
 makefile = open(f"{dic}/Makefile", "w")
 makefile.write("CC = cc\n")
 makefile.write("CFLAGS = -Wall -Wextra -Werror\n")
+
+makefile.write(f"LFLAGS = {link_flags}\n")
+makefile.write(f"INCLUDE = {include}\n")
 makefile.write(f"NAME = {title}\n\n")
 makefile.write("MANDATORY_SRCS = \\\n")
 
