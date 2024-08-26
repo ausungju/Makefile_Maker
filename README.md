@@ -39,6 +39,6 @@ Maker파일을 ./Maker or python3 Maker로 실행 하세요
 # 자동 설치의 경우
 rm ~/.local/Maker
 rm ~/.config/fish/functions/maker.fish
-sed -i '/삭제 할 내용/d' ~/.zshrc
-sed -i '/삭제 할 내용/d' ~/.bash
+sed -i '/.local\/Maker/d' ~/.zshrc
+sed -i '/.local\/Maker/d' ~/.bashrc
 ```
