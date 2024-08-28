@@ -34,7 +34,7 @@ maker
 * 수동 설치<br>
 Maker파일을 ./Maker or python3 Maker로 실행 하세요
 
-## 삭제
+## 삭제(자동 설치시)
 ```
 # 자동 설치의 경우
 rm ~/.local/Maker
