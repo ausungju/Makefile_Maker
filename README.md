@@ -40,5 +40,5 @@ Maker파일을 ./Maker or python3 Maker로 실행 하세요
 rm ~/.local/Maker
 rm ~/.config/fish/functions/maker.fish
 sed -i '/.local\/Maker/d' ~/.zshrc
-sed -i '/.local\/Maker/d' ~/.bashrc
+sed -i '/.local\/Maker/d' ~/.bashrc // ~/.bashrc가 존재한다면
 ```
