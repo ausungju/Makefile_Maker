@@ -38,10 +38,13 @@ Maker파일을 ./Maker or python3 Maker로 실행 하세요
 ```
 # 자동 설치의 경우
 rm ~/.local/Maker
+
 # fish 셀 alias 삭제
 rm ~/.config/fish/functions/maker.fish
+
 # zsh 셀 alias 삭제
 sed -i '/.local\/Maker/d' ~/.zshrc
+
 # bash 셀 alias 삭제
 sed -i '/.local\/Maker/d' ~/.bashrc 
 ```
